@@ -1,0 +1,9 @@
+# ROS 2 workspace build artifacts
+build/
+install/
+log/
+.colcon_workspace
+
+# VSCode / IDE
+.vscode/
+.idea/
