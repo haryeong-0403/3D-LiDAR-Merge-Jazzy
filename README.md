@@ -20,17 +20,6 @@ ros2 launch lidar_bringup dual_lidar.launch.py
 - 파일 위치
 lidar_bringup/dual_lidar.launch.py
 
-## LiDAR Merge
-
-- 명령어
-
-```bash
-ros2 launch pointcloud_fusion fusion_launch.launch.py
-```
-
-- 파일 위치
-pointcloud_fusion/fusion_launch.launch.py
-
 # 🚀 앞으로 진행해야할 점 (Project Roadmap)
 
 1️⃣ Extrinsic Calibration (ICP)
