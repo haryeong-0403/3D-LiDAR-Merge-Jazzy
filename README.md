@@ -3,7 +3,7 @@
 # 📦 Build 명령어
 
 ```bash
-colcon build --symlink-install
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 source install/setup.bash
 ```
 
