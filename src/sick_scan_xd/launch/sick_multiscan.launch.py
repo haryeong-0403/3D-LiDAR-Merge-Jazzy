@@ -9,9 +9,9 @@ from launch.substitutions.path_join_substitution import PathJoinSubstitution
 def generate_launch_description():
     
     # Declare all arguments to be passed from the parent launch file
-    hostname_arg = DeclareLaunchArgument('hostname', default_value='192.168.0.1')
-    udp_receiver_ip_arg = DeclareLaunchArgument('udp_receiver_ip', default_value='192.168.0.170')
-    nodename_arg = DeclareLaunchArgument('nodename', default_value='multiScan')
+    hostname_arg = DeclareLaunchArgument('hostname', default_value='192.168.127.40')
+    udp_receiver_ip_arg = DeclareLaunchArgument('udp_receiver_ip', default_value='192.168.127.30')
+    nodename_arg = DeclareLaunchArgument('nodename', default_value='lidar1_link')
     publish_frame_id_arg = DeclareLaunchArgument('publish_frame_id', default_value='world')
     udp_port_arg = DeclareLaunchArgument('udp_port', default_value='2115')
     imu_udp_port_arg = DeclareLaunchArgument('imu_udp_port', default_value='7503')

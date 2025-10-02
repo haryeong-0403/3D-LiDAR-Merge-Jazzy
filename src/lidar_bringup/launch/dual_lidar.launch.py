@@ -10,14 +10,14 @@ def generate_launch_description():
     sick_share = get_package_share_directory('sick_scan_xd')
     sick_multiscan_launch = os.path.join(sick_share, 'launch', 'sick_multiscan.launch.py')
 
-    # LiDAR 1 설정 (변경 없음)
+    # LiDAR 1
     lidar1 = GroupAction([
         PushRosNamespace('lidar1'),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(sick_multiscan_launch),
             launch_arguments={
-                'hostname': '192.168.0.160',
-                'udp_receiver_ip': '192.168.0.170',
+                'hostname': '192.168.127.40',
+                'udp_receiver_ip': '192.168.127.30',
                 'udp_port': '2115',
                 'check_udp_receiver_port': '2116',
                 'imu_udp_port': '7503',
@@ -39,14 +39,14 @@ def generate_launch_description():
         )
     ])
 
-    # LiDAR 2 설정 (변경 없음)
+    # LiDAR 2
     lidar2 = GroupAction([
         PushRosNamespace('lidar2'),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(sick_multiscan_launch),
             launch_arguments={
-                'hostname': '192.168.0.2',
-                'udp_receiver_ip': '192.168.0.170',
+                'hostname': '192.168.127.50',
+                'udp_receiver_ip': '192.168.127.30',
                 'udp_port': '2117',
                 'check_udp_receiver_port': '2118',
                 'imu_udp_port': '7504',
@@ -68,49 +68,68 @@ def generate_launch_description():
         )
     ])
 
-    # --- Static TFs (좌표 변환) ---
-
-    # map -> base_link (월드 좌표계와 로봇 바닥의 관계, 보통은 0,0,0)
-    map_to_base_link = Node(
+    # TF 설정
+    map_to_base_link = Node( # map 좌표계와 base_link 좌표계를 일치시킴
         package='tf2_ros',
         executable='static_transform_publisher',
         arguments=['0', '0', '0', '0', '0', '0', 'map', 'base_link'],
         name='map_to_base_link_tf'
     )
     
-    # Z축으로 38cm(0.38m)만큼 위로 이동하는 새로운 TF를 정의합니다.
-    base_to_base_scan = Node(
+    base_to_base_scan = Node( # base_scan
         package='tf2_ros',
         executable='static_transform_publisher',
         arguments=['0', '0', '0.38', '0', '0', '0', 'base_link', 'base_scan'],
         name='base_to_base_scan_tf'
     )
     
-    # 뒤로 23cm(x=-0.23), 왼쪽으로 20cm(y=0.20) 이동하고, 왼쪽으로 48.12도(yaw=0.840) 회전합니다.
-    static_tf_lidar1 = Node(
+    """
+    x (m)
+
+    y (m)
+
+    z (m)
+
+    yaw (rad)
+
+    pitch (rad)
+
+    roll (rad)
+
+    parent frame
+
+    child frame
+    """
+    static_tf_lidar1 = Node( # base_scan → lidar1_link (첫 번째 LiDAR의 위치/자세)
         package='tf2_ros', executable='static_transform_publisher',
-        # arguments 순서: x     y      z    yaw      pitch  roll   parent     child
-        arguments=['-0.23', '0.20', '0', '-0.840', '0',   '0', 'base_scan', 'lidar1_link'],
+        arguments=['-0.23', '0.20', '0', '-0.840', '0', '0', 'base_scan', 'lidar1_link'],
         name='static_tf_lidar1'
     )
     
-    # 이전에 보정한 최종 값을 그대로 사용합니다.
-    static_tf_lidar2 = Node(
+    static_tf_lidar2 = Node( 
         package='tf2_ros', executable='static_transform_publisher',
         arguments=[
-            TextSubstitution(text='-0.231'), # x
-            TextSubstitution(text='-0.584'), # y
-            TextSubstitution(text='0.027'),  # z
-            TextSubstitution(text='-0.440'), # yaw
-            TextSubstitution(text='0.021'),  # pitch
-            TextSubstitution(text='0.004'),  # roll
-            TextSubstitution(text='base_scan'), 
+            TextSubstitution(text='-0.231'),
+            TextSubstitution(text='-0.584'),
+            TextSubstitution(text='0.027'),
+            TextSubstitution(text='-0.440'),
+            TextSubstitution(text='0.021'),
+            TextSubstitution(text='0.004'),
+            TextSubstitution(text='base_scan'),
             TextSubstitution(text='lidar2_link')
         ],
         name='static_tf_lidar2'
     )
+
+    # Fusion Node 실행
+    fusion_node = Node(
+        package='pointcloud_fusion',
+        executable='pointcloud_fusion_node',
+        name='pointcloud_fusion',
+        output='screen'
+    )
     
-    # RViz 노드
+    # RViz 실행
     rviz = Node(package='rviz2', executable='rviz2', name='rviz2')
 
     return LaunchDescription([
@@ -120,5 +139,6 @@ def generate_launch_description():
         base_to_base_scan,    
         static_tf_lidar1,
         static_tf_lidar2,
+        fusion_node,
         rviz
     ])
