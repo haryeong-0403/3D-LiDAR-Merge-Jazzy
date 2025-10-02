@@ -102,7 +102,7 @@ def generate_launch_description():
     """
     static_tf_lidar1 = Node( # base_scan → lidar1_link (첫 번째 LiDAR의 위치/자세)
         package='tf2_ros', executable='static_transform_publisher',
-        arguments=['-0.23', '0.20', '0', '-0.840', '0', '0', 'base_scan', 'lidar1_link'],
+        arguments=['0.23', '-0.584', '0', '-0.840', '0', '0', 'base_scan', 'lidar1_link'],
         name='static_tf_lidar1'
     )
     
@@ -110,9 +110,9 @@ def generate_launch_description():
         package='tf2_ros', executable='static_transform_publisher',
         arguments=[
             TextSubstitution(text='-0.231'),
-            TextSubstitution(text='-0.584'),
+            TextSubstitution(text='0.584'),
             TextSubstitution(text='0.027'),
-            TextSubstitution(text='-0.440'),
+            TextSubstitution(text='2.30159'),
             TextSubstitution(text='0.021'),
             TextSubstitution(text='0.004'),
             TextSubstitution(text='base_scan'),
