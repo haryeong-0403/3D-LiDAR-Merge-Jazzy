@@ -18,4 +18,6 @@ ros2 launch lidar_bringup dual_lidar_fusion.launch.py
 ```
 
 - 파일 위치
+```bash
 lidar_bringup/dual_lidar_fusion.launch.py
+```
