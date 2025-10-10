@@ -39,6 +39,10 @@ target_link_libraries(pointcloud_fusion_node
   ${PCL_LIBRARIES}
 )
 
+install(DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}
+)
+
 install(TARGETS
   pointcloud_fusion_node
   DESTINATION lib/${PROJECT_NAME})
