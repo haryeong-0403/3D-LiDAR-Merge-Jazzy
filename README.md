@@ -21,3 +21,8 @@ ros2 launch lidar_bringup dual_lidar_fusion.launch.py
 ```bash
 lidar_bringup/dual_lidar_fusion.launch.py
 ```
+
+## LiDAR Object Detection(Clustering)
+```bash
+ros2 launch lidar_cluster euclidean_spatial.launch.py topic:=/merged_points tolerance:=0.6 verbose1:=True
+```
