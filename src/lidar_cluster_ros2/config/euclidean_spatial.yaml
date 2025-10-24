@@ -1,0 +1,23 @@
+LiDAR_Object_Detection:
+  ros__parameters:
+    # ROI
+    minX: -5.0
+    minY: -5.0
+    minZ: -5.0
+    maxX:  5.0
+    maxY:  5.0
+    maxZ:  5.0
+
+    # 토픽
+    points_in_topic: /merged_points
+    points_out_topic: clustered_points
+    marker_out_topic: clustered_marker
+    cluster_count_topic: cluster_count
+
+    # 클러스터링 & 로그
+    tolerance: 0.9
+    min_cluster_size: 10
+    max_cluster_size: 3000
+    use_height: false   
+    verbose1: true
+    verbose2: true
