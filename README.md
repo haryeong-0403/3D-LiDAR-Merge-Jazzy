@@ -7,6 +7,11 @@ colcon build --symlink-install
 source install/setup.bash
 ```
 
+```bash
+MAKEFLAGS="-j8" colcon build --packages-select lidar_cluster --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+```
+
+
 # 🏗️ Run
 
 ## Dual LiDAR Fusion
