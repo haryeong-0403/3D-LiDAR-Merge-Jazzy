@@ -15,9 +15,15 @@ LiDAR_Object_Detection:
     cluster_count_topic: cluster_count
 
     # 클러스터링 & 로그
-    tolerance: 0.9
+    tolerance: 0.6
     min_cluster_size: 10
-    max_cluster_size: 3000
-    use_height: false   
+    max_cluster_size: 10000
+    voxel_leaf_size: 0.08
+    use_height: true   
     verbose1: true
     verbose2: true
+
+# tolerance
+# 같은 클러스터로 묶을 최대 이웃 거리
+# 작게 하면: 근거리에서 주변(바닥/차체/벽)과 붙지 않아 객체가 잘 분리됨
+# 크게 하면: 근거리에서 포인트들이 대범위로 연결되어 거대 클러스터가 됨
